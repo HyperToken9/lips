@@ -1,0 +1,28 @@
+[project]
+name = "lips"
+version = "0.1.0"
+description = "Experiments in lip reading silent video into English text"
+readme = "README.md"
+authors = [
+    { name = "nathan", email = "nathanadrian2002@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "jiwer>=4.0.0",
+]
+
+[project.scripts]
+lips-wer = "lips.wer:main"
+
+[build-system]
+requires = ["uv_build>=0.9.11,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+addopts = "--disable-plugin-autoload"
+testpaths = ["tests"]
