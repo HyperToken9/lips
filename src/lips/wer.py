@@ -95,9 +95,13 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("hyps", type=Path, help="model output TSV (clip_id<TAB>text)")
     parser.add_argument("--worst", type=int, default=10, help="worst clips to list")
     parser.add_argument("--json", type=Path, help="also write the full report here")
+    parser.add_argument("--subset", action="store_true", help="score only clips present in the hypothesis file")
     args = parser.parse_args(argv)
 
-    report = score(read_tsv(args.refs), read_tsv(args.hyps), args.worst)
+    refs, hyps = read_tsv(args.refs), read_tsv(args.hyps)
+    if args.subset:
+        refs = {i: t for i, t in refs.items() if i in hyps}
+    report = score(refs, hyps, args.worst)
     if args.json:
         args.json.write_text(json.dumps(asdict(report), indent=2) + "\n")
 
